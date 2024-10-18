@@ -1,0 +1,72 @@
+<div class="container p-3">
+    <nav class="p-2 m-3 border border-info">
+        <button *ngIf="AuthenticationService.hasRole('ADMIN')" class="btn btn-outline-info" (click)="handelNewProduct()">
+            <i class="bi bi-pencil-square"></i>
+            New Product
+        </button>
+        <button *ngIf="AuthenticationService.hasRole('ADMIN')" class="btn btn-outline-info ms-3" (click)="handelPromotedProduct()">
+            <i class="bi bi-pencil-square"></i>
+            Promoted Products
+        </button>
+        <button *ngIf="AuthenticationService.hasRole('ADMIN')" class="btn btn-outline-info ms-3" (click)="handleGetAllProducts()">
+            <i class="bi bi-pencil-square"></i>
+            All Products
+        </button>
+    </nav>
+   <ng-template #errors>
+    <div class="text-danger">
+ {{errorMessage}}
+    </div>
+   </ng-template>
+    <div class="card" *ngIf="products; else errors">
+        <div class="card-header">
+            Products List
+        </div>
+        <div class="card-body">
+            <form [formGroup]="searchFormgroup" (ngSubmit)="hundelSearchProduct()">
+                <div class="input-group">
+                    <label for="search" class="input-group-text">Keyword</label>
+                    <input  class="form-control" type="text" name="" id="search" formControlName="keyword">
+                    <button class="btn btn-info"><i class="bi bi-search"></i></button>
+                </div>
+            </form>
+            <table *ngIf="products" class="table ms-1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Promotion?</th>
+                        <th>promotion</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of products">
+                    <td>{{p.id}}</td>
+                    <td>{{p.name}}</td>
+                    <td>{{p.price}}</td>
+                    <td ><i *ngIf="p.promotion==true" class="bi bi-heart-fill text-success"></i>
+                        <i *ngIf="p.promotion==false" class="bi bi-heart-fill text-danger"></i>
+                    </td>
+                    <td *ngIf="AuthenticationService.hasRole('ADMIN')">
+                        <button (click)="hundelSetPromotion(p)" [ngClass]="p.promotion==true?'btn btn-success':'btn btn-danger'">
+                            <span *ngIf="p.promotion">Promo Off</span>
+                            <span *ngIf="!p.promotion">Promo On</span>
+                        </button>
+                    </td>
+                    <td *ngIf="AuthenticationService.hasRole('ADMIN')">
+                        <button (click)="deleteproduct(p)" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                        <button (click)="updateproduct(p)" class="btn btn-warning ms-3"><i class="bi bi-pencil-square"></i></button>
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
+            <ul class="nav nav-pills">
+                <li [ngClass]="i==curentPage?'btn btn-info':'btn btn-outline-info'" class=" ms-1" (click)="gotoPage(i)" *ngFor="let page of [].constructor(this.totalpages);let i=index" >
+                  {{i}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

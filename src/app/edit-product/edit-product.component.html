@@ -1,0 +1,35 @@
+<div class="container mt-5">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header">Ajout de produit</div>
+            <div class="card-body">
+             <form [formGroup]="ProductFormGroup" (ngSubmit)="handelUpdateProduct()">
+              <div class="mb-3">
+                <label class="form-label" for="name">ID : </label>
+                <label class="form-label" for="name">{{ product.id }}</label>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="name">Name</label>
+                <input class="form-control" type="text" name="name" id="name" formControlName="name">
+                <small *ngIf="ProductFormGroup.controls['name'].errors && ProductFormGroup.controls['name'].touched" class="text-danger">
+                  {{productservice.getMessageError("Nom ",ProductFormGroup.controls['name'].errors)}}
+                </small>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="name">Price</label>
+                <input class="form-control" type="number" name="name" id="name" formControlName="price">
+                <small *ngIf="ProductFormGroup.controls['price'].errors && ProductFormGroup.controls['price'].touched" class="text-danger">
+                  {{productservice.getMessageError("Price ",ProductFormGroup.controls['price'].errors)}}
+                </small>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="name">In promotion?</label>
+                <input type="checkbox" class="form-check-input" name="name" id="name" formControlName="promotion">
+              </div>
+              <button [disabled]="!ProductFormGroup.valid" class="btn btn-outline-success" type="submit">Save</button>
+             </form>
+            </div>
+        </div>
+    </div>
+</div>
+
